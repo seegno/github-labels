@@ -4,10 +4,12 @@
  * Module dependencies.
  */
 
+import { keys, omit, pickBy, values } from 'lodash';
 import { readFile } from 'fs';
 import { version } from '../package.json';
 import Client from './client';
 import Promise from 'bluebird';
+import inquirer from 'inquirer';
 import prettyjson from 'prettyjson';
 import yargs from 'yargs';
 
@@ -24,10 +26,10 @@ const readFileAsync = Promise.promisify(readFile);
 const args = yargs
   .usage('Usage: $0 [options]')
   .env('GITHUB_LABELS')
-  .option('owner', { demand: true, describe: 'Repository owner', type: 'string' })
-  .option('repository', { demand: true, describe: 'Repository name', type: 'string' })
+  .option('owner', { demand: false, describe: 'Repository owner', type: 'string' })
+  .option('repository', { demand: false, describe: 'Repository name', type: 'string' })
   .option('token', { demand: true, describe: 'GitHub authentication token', type: 'string' })
-  .option('configFile', { demand: true, describe: 'Configuration file', type: 'string' })
+  .option('configFile', { demand: false, describe: 'Configuration file', type: 'string' })
   .help('h')
   .alias('h', 'help')
   .version('version', 'Version', version)
@@ -37,11 +39,34 @@ const args = yargs
   .argv;
 
 /**
+ * Program questions.
+ */
+
+const questions = {
+  configFile: {
+    message: 'What is the configuration file path?',
+    name: 'configFile',
+    validate: input => !!input
+  },
+  owner: {
+    message: 'What is the owner name?',
+    name: 'owner',
+    validate: input => !!input
+  },
+  repository: {
+    message: 'What is the repository name?',
+    name: 'repository',
+    validate: input => !!input
+  }
+};
+
+/**
  * Program.
  */
 
 (async function() {
-  const { configFile, owner, repository, token } = args;
+  const answers = await inquirer.prompt(values(omit(questions, keys(pickBy(args)))));
+  const { configFile, owner, repository, token } = { ...args, ...answers };
 
   // Instantiate client.
   const client = new Client({
