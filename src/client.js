@@ -3,10 +3,10 @@
  * Module dependencies.
  */
 
+import { differenceBy, get } from 'lodash';
 import Github from 'github';
 import Promise from 'bluebird';
 import config from 'config';
-import { differenceBy, get } from 'lodash';
 
 /**
  * Export `Client`.

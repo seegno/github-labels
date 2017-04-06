@@ -4,11 +4,11 @@
  * Module dependencies.
  */
 
+import { readFile } from 'fs';
+import { version } from '../package.json';
 import Client from './client';
 import Promise from 'bluebird';
 import prettyjson from 'prettyjson';
-import { readFile } from 'fs';
-import { version } from '../package.json';
 import yargs from 'yargs';
 
 /**
