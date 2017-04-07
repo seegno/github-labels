@@ -1,0 +1,66 @@
+[
+  {
+    "name": "blocked",
+    "color": "FECC3B"
+  },
+  {
+    "name": "in progress",
+    "color": "1CC763"
+  },
+  {
+    "name": "needs design",
+    "color": "754BAF"
+  },
+  {
+    "name": "needs feedback",
+    "color": "DCDF75"
+  },
+  {
+    "name": "needs review",
+    "color": "8261A5"
+  },
+  {
+    "name": "todo",
+    "color": "38FD83"
+  },
+  {
+    "name": "status:wip",
+    "color": "FECC3B"
+  },
+  {
+    "name": "backend",
+    "color": "FF5F00"
+  },
+  {
+    "name": "design",
+    "color": "4E28E5"
+  },
+  {
+    "name": "frontend",
+    "color": "00ADFF"
+  },
+  {
+    "name": "ops",
+    "color": "7E8082"
+  },
+  {
+    "name": "bug",
+    "color": "EF2245"
+  },
+  {
+    "name": "discussion",
+    "color": "CD7800"
+  },
+  {
+    "name": "enhancement",
+    "color": "19B6B9"
+  },
+  {
+    "name": "feature",
+    "color": "B2FDA2"
+  },
+  {
+    "name": "support",
+    "color": "F5E4AB"
+  }
+]
