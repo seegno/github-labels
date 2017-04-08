@@ -31,8 +31,8 @@ export default class Client {
    * Authenticate.
    */
 
-  authenticate(token) {
-    return this.github.authenticateAsync({ token, type: 'oauth' });
+  async authenticate(token) {
+    return await this.github.authenticateAsync({ token, type: 'oauth' });
   }
 
   /**
