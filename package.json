@@ -11,8 +11,8 @@
   "license": "MIT",
   "author": {
     "name": "Nuno Rafael Rocha",
-    "email": "nunorafael@seegno.com",
-    "url": "http://seegno.com"
+    "email": "nuno@seegno.com",
+    "url": "https://seegno.com"
   },
   "bin": "./dist/index.js",
   "scripts": {
