@@ -23,6 +23,7 @@ const readFileAsync = Promise.promisify(readFile);
 
 const args = yargs
   .usage('Usage: $0 [options]')
+  .env('GITHUB_LABELS')
   .option('owner', { demand: true, describe: 'Repository owner', type: 'string' })
   .option('repository', { demand: true, describe: 'Repository name', type: 'string' })
   .option('token', { demand: true, describe: 'GitHub authentication token', type: 'string' })
