@@ -18,10 +18,10 @@ export default class Client {
    * Constructor.
    */
 
-  constructor({ user, repository }) {
+  constructor({ owner, repository }) {
     this.github = new Github(config.get('github'));
+    this.owner = owner;
     this.repository = repository;
-    this.user = user;
 
     Promise.promisifyAll(this.github.issues);
     Promise.promisifyAll(this.github);
@@ -32,19 +32,19 @@ export default class Client {
    */
 
   authenticate(token) {
-    return this.github.authenticateAsync({ token, type: 'oauth' });
+    this.github.authenticate({ token, type: 'oauth' });
   }
 
   /**
    * Create a new label with given `name` and `color`.
    */
 
-  createLabel(name, color) {
-    return this.github.issues.createLabelAsync({
+  async createLabel(name, color) {
+    return await this.github.issues.createLabelAsync({
       color,
       name,
-      repo: this.repository,
-      user: this.user
+      owner: this.owner,
+      repo: this.repository
     });
   }
 
@@ -72,11 +72,11 @@ export default class Client {
    * Delete label by given `name`.
    */
 
-  deleteLabel(name) {
-    return this.github.issues.deleteLabelAsync({
+  async deleteLabel(name) {
+    return await this.github.issues.deleteLabelAsync({
       name,
-      repo: this.repository,
-      user: this.user
+      owner: this.owner,
+      repo: this.repository
     });
   }
 
@@ -84,22 +84,24 @@ export default class Client {
    * Get all repository labels.
    */
 
-  getLabels() {
-    return this.github.issues.getLabelsAsync({
-      repo: this.repository,
-      user: this.user
+  async getLabels() {
+    const result = await this.github.issues.getLabelsAsync({
+      owner: this.owner,
+      repo: this.repository
     });
+
+    return result.data;
   }
 
   /**
    * Get label by given `name`.
    */
 
-  getLabel(name) {
-    return this.github.issues.getLabelAsync({
+  async getLabel(name) {
+    return await this.github.issues.getLabelAsync({
       name,
-      repo: this.repository,
-      user: this.user
+      owner: this.owner,
+      repo: this.repository
     });
   }
 
@@ -107,12 +109,13 @@ export default class Client {
    * Update an existing label with given `color`.
    */
 
-  updateLabel(name, color) {
-    return this.github.issues.updateLabelAsync({
+  async updateLabel(name, color) {
+    return await this.github.issues.updateLabelAsync({
       color,
       name,
-      repo: this.repository,
-      user: this.user
+      oldname: name,
+      owner: this.owner,
+      repo: this.repository
     });
   }
 

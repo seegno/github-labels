@@ -70,8 +70,8 @@ const questions = {
 
   // Instantiate client.
   const client = new Client({
-    repository,
-    user: owner
+    owner,
+    repository
   });
 
   // Authenticate user with given `token` in the program options.
