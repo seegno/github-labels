@@ -137,7 +137,5 @@ export default class Client {
     for (const { color, name } of labels) {
       await this.createOrUpdateLabel(name, color);
     }
-
-    return labels;
   }
 }
