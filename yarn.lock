@@ -2827,6 +2827,16 @@ sshpk@^1.7.0:
     jsbn "~0.1.0"
     tweetnacl "~0.14.0"
 
+"standard-error@>= 1.1.0 < 2":
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/standard-error/-/standard-error-1.1.0.tgz#23e5168fa1c0820189e5812701a79058510d0d34"
+
+standard-http-error@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/standard-http-error/-/standard-http-error-2.0.0.tgz#b59295c13f67fffa4b78973f2e522dc1426b3df5"
+  dependencies:
+    standard-error ">= 1.1.0 < 2"
+
 stream-consume@^0.1.0:
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/stream-consume/-/stream-consume-0.1.0.tgz#a41ead1a6d6081ceb79f65b061901b6d8f3d1d0f"
