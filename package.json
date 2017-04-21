@@ -18,7 +18,10 @@
   "scripts": {
     "build": "rm -rf dist/* && babel src --out-dir dist",
     "changelog": "github_changelog_generator --no-issues --header-label='# Changelog' --future-release=v$npm_config_future_release && sed -i '' -e :a -e '$d;N;2,4ba' -e 'P;D' CHANGELOG.md",
-    "lint": "eslint src",
+    "cover": "jest --coverage --forceExit",
+    "lint": "eslint src test",
+    "test": "jest --forceExit",
+    "test-watch": "jest --watch --notify --onlyChanged",
     "version": "npm run changelog --future-release=$npm_package_version && git add -A CHANGELOG.md"
   },
   "dependencies": {
@@ -47,6 +50,16 @@
   },
   "engines": {
     "node": ">=4"
+  },
+  "jest": {
+    "coverageDirectory": "coverage",
+    "coverageReporters": [
+      "html",
+      "lcov",
+      "text"
+    ],
+    "testEnvironment": "node",
+    "testRegex": "(/test/.*\\.test.js)$"
   },
   "pre-commit": [
     "lint"
