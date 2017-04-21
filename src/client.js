@@ -3,7 +3,7 @@
  * Module dependencies.
  */
 
-import { differenceBy, get } from 'lodash';
+import { differenceBy, get, has } from 'lodash';
 import Github from 'github';
 import Promise from 'bluebird';
 import config from 'config';
@@ -53,16 +53,18 @@ export default class Client {
    */
 
   async createOrUpdateLabel(name, color) {
-    try {
-      const label = await this.getLabel(name);
+    let label = false;
 
-      if (label) {
-        return await this.updateLabel(name, color);
-      }
+    try {
+      label = await this.getLabel(name);
     } catch (err) {
-      if (!(err instanceof Error) && get(err, 'code') !== 404) {
+      if (!has(err, 'code') || get(err, 'code') !== 404) {
         throw err;
       }
+    }
+
+    if (label) {
+      return await this.updateLabel(name, color);
     }
 
     return await this.createLabel(name, color);
