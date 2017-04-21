@@ -27,14 +27,14 @@ const args = yargs
   .usage('Usage: $0 [options]')
   .env('GITHUB_LABELS')
   .option('owner', { demand: false, describe: 'Repository owner', type: 'string' })
-  .option('repository', { demand: false, describe: 'Repository name', type: 'string' })
+  .option('repo', { demand: false, describe: 'Repository name', type: 'string' })
   .option('token', { demand: true, describe: 'GitHub authentication token', type: 'string' })
   .option('configFile', { demand: false, describe: 'Configuration file', type: 'string' })
   .help('h')
   .alias('h', 'help')
   .version('version', 'Version', version)
   .alias('V', 'version')
-  .example('$0 --owner foo --repository bar --token foobar --configFile ./path/somefile')
+  .example('$0 --owner foo --repo bar --token foobar --configFile ./path/somefile')
   .wrap(null)
   .argv;
 
@@ -53,9 +53,9 @@ const questions = {
     name: 'owner',
     validate: input => !!input
   },
-  repository: {
+  repo: {
     message: 'What is the repository name?',
-    name: 'repository',
+    name: 'repo',
     validate: input => !!input
   }
 };
@@ -66,12 +66,12 @@ const questions = {
 
 (async function() {
   const answers = await inquirer.prompt(values(omit(questions, keys(pickBy(args)))));
-  const { configFile, owner, repository, token } = { ...args, ...answers };
+  const { configFile, owner, repo, token } = { ...args, ...answers };
 
   // Instantiate client.
   const client = new Client({
     owner,
-    repository
+    repo
   });
 
   // Authenticate user with given `token` in the program options.

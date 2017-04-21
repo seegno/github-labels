@@ -18,10 +18,10 @@ export default class Client {
    * Constructor.
    */
 
-  constructor({ owner, repository }) {
+  constructor({ owner, repo }) {
     this.github = new Github(config.get('github'));
     this.owner = owner;
-    this.repository = repository;
+    this.repo = repo;
 
     Promise.promisifyAll(this.github.issues);
     Promise.promisifyAll(this.github);
@@ -44,7 +44,7 @@ export default class Client {
       color,
       name,
       owner: this.owner,
-      repo: this.repository
+      repo: this.repo
     });
   }
 
@@ -76,18 +76,18 @@ export default class Client {
     return await this.github.issues.deleteLabelAsync({
       name,
       owner: this.owner,
-      repo: this.repository
+      repo: this.repo
     });
   }
 
   /**
-   * Get all repository labels.
+   * Get all repo labels.
    */
 
   async getLabels() {
     const result = await this.github.issues.getLabelsAsync({
       owner: this.owner,
-      repo: this.repository
+      repo: this.repo
     });
 
     return result.data;
@@ -101,7 +101,7 @@ export default class Client {
     return await this.github.issues.getLabelAsync({
       name,
       owner: this.owner,
-      repo: this.repository
+      repo: this.repo
     });
   }
 
@@ -115,7 +115,7 @@ export default class Client {
       name,
       oldname: name,
       owner: this.owner,
-      repo: this.repository
+      repo: this.repo
     });
   }
 
