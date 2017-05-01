@@ -17,8 +17,9 @@
   "bin": "./dist/index.js",
   "scripts": {
     "build": "rm -rf dist/* && babel src --out-dir dist",
-    "changelog": "github_changelog_generator --no-issues --header-label='# Changelog'",
-    "lint": "eslint src"
+    "changelog": "github_changelog_generator --no-issues --header-label='# Changelog' --future-release=v$npm_config_future_release && sed -i '' -e :a -e '$d;N;2,4ba' -e 'P;D' CHANGELOG.md",
+    "lint": "eslint src",
+    "version": "npm run changelog --future-release=$npm_package_version && git add -A CHANGELOG.md"
   },
   "dependencies": {
     "bluebird": "^3.3.1",
