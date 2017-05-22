@@ -6,7 +6,18 @@
 import { differenceBy, get, has } from 'lodash';
 import Github from 'github';
 import Promise from 'bluebird';
-import config from 'config';
+
+/**
+ * GitHub configuration.
+ */
+
+const config = {
+  debug: false,
+  host: 'api.github.com',
+  protocol: 'https',
+  timeout: 5000,
+  version: '3.0.0'
+};
 
 /**
  * Export `Client`.
@@ -18,8 +29,8 @@ export default class Client {
    * Constructor.
    */
 
-  constructor({ owner, repo }) {
-    this.github = new Github(config.get('github'));
+  constructor({ owner, repo, options }) {
+    this.github = new Github({ ...config, ...options });
     this.owner = owner;
     this.repo = repo;
 
