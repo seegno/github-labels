@@ -18,7 +18,10 @@
   "scripts": {
     "build": "rm -rf dist/* && babel src --out-dir dist",
     "changelog": "github_changelog_generator --no-issues --header-label='# Changelog' --future-release=v$npm_config_future_release && sed -i '' -e :a -e '$d;N;2,4ba' -e 'P;D' CHANGELOG.md",
-    "lint": "eslint src",
+    "cover": "jest --coverage --forceExit",
+    "lint": "eslint src test",
+    "test": "jest --forceExit",
+    "test-watch": "jest --watch --notify --onlyChanged",
     "version": "npm run changelog --future-release=$npm_package_version && git add -A CHANGELOG.md"
   },
   "dependencies": {
@@ -34,16 +37,29 @@
   "devDependencies": {
     "babel-cli": "^6.4.0",
     "babel-eslint": "^7.2.1",
+    "babel-jest": "^19.0.0",
     "babel-plugin-transform-async-to-generator": "^6.5.0",
     "babel-plugin-transform-object-rest-spread": "^6.23.0",
     "babel-preset-es2015-node4": "^2.1.0",
     "eslint": "^3.19.0",
     "eslint-config-seegno": "^9.0.0",
     "eslint-plugin-babel": "^4.1.1",
-    "should": "^8.3.0"
+    "eslint-plugin-jest": "^19.0.1",
+    "jest": "^20.0.4",
+    "standard-http-error": "^2.0.0"
   },
   "engines": {
     "node": ">=4"
+  },
+  "jest": {
+    "coverageDirectory": "coverage",
+    "coverageReporters": [
+      "html",
+      "lcov",
+      "text"
+    ],
+    "testEnvironment": "node",
+    "testRegex": "(/test/.*\\.test.js)$"
   },
   "pre-commit": [
     "lint"
