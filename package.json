@@ -14,7 +14,9 @@
     "email": "nuno@seegno.com",
     "url": "https://seegno.com"
   },
-  "bin": "./dist/index.js",
+  "bin": {
+    "ghlabels": "./dist/bin/labels.js"
+  },
   "scripts": {
     "build": "rm -rf dist/* && babel src --out-dir dist",
     "changelog": "github_changelog_generator --no-issues --header-label='# Changelog' --future-release=v$npm_config_future_release && sed -i '' -e :a -e '$d;N;2,4ba' -e 'P;D' CHANGELOG.md",
