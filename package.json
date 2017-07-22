@@ -14,7 +14,10 @@
     "email": "nuno@seegno.com",
     "url": "https://seegno.com"
   },
-  "bin": "./dist/index.js",
+  "main": "./dist/index.js",
+  "bin": {
+    "ghlabels": "./dist/bin/labels.js"
+  },
   "scripts": {
     "build": "rm -rf dist/* && babel src --out-dir dist",
     "changelog": "github_changelog_generator --no-issues --header-label='# Changelog' --future-release=v$npm_config_future_release && sed -i '' -e :a -e '$d;N;2,4ba' -e 'P;D' CHANGELOG.md",
@@ -24,6 +27,9 @@
     "test-watch": "jest --watch --notify --onlyChanged",
     "version": "npm run changelog --future-release=$npm_package_version && git add -A CHANGELOG.md"
   },
+  "pre-commit": [
+    "lint"
+  ],
   "dependencies": {
     "bluebird": "^3.3.1",
     "config": "^1.19.0",
@@ -59,8 +65,5 @@
     ],
     "testEnvironment": "node",
     "testRegex": "(/test/.*\\.test.js)$"
-  },
-  "pre-commit": [
-    "lint"
-  ]
+  }
 }
