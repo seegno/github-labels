@@ -4,20 +4,20 @@
     "color": "FECC3B"
   },
   {
-    "name": "in progress",
+    "name": "in-progress",
     "color": "1CC763"
   },
   {
-    "name": "needs design",
+    "name": "in-review",
+    "color": "8261A5"
+  },
+  {
+    "name": "needs-design",
     "color": "754BAF"
   },
   {
-    "name": "needs feedback",
+    "name": "needs-feedback",
     "color": "DCDF75"
-  },
-  {
-    "name": "needs review",
-    "color": "8261A5"
   },
   {
     "name": "todo",
