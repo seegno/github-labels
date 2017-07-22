@@ -14,6 +14,7 @@
     "email": "nuno@seegno.com",
     "url": "https://seegno.com"
   },
+  "main": "./dist/index.js",
   "bin": {
     "ghlabels": "./dist/bin/labels.js"
   },
@@ -26,6 +27,9 @@
     "test-watch": "jest --watch --notify --onlyChanged",
     "version": "npm run changelog --future-release=$npm_package_version && git add -A CHANGELOG.md"
   },
+  "pre-commit": [
+    "lint"
+  ],
   "dependencies": {
     "bluebird": "^3.3.1",
     "config": "^1.19.0",
@@ -61,8 +65,5 @@
     ],
     "testEnvironment": "node",
     "testRegex": "(/test/.*\\.test.js)$"
-  },
-  "pre-commit": [
-    "lint"
-  ]
+  }
 }
