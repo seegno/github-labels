@@ -160,7 +160,7 @@ describe('Client', () => {
     });
   });
 
-  describe('updateLabels', () => {
+  describe('setLabels', () => {
     const labels = [
       {
         color: 'foo',
@@ -192,7 +192,7 @@ describe('Client', () => {
       client.createOrUpdateLabel = jest.fn(() => true);
       client.getLabels = jest.fn(() => currentLabels);
 
-      await client.updateLabels(labels);
+      await client.setLabels(labels);
 
       expect(client.deleteLabel).toHaveBeenCalledTimes(1);
       expect(client.deleteLabel).toHaveBeenCalledWith('quux');
@@ -203,7 +203,7 @@ describe('Client', () => {
       client.createOrUpdateLabel = jest.fn(() => true);
       client.getLabels = jest.fn(() => currentLabels);
 
-      await client.updateLabels(labels);
+      await client.setLabels(labels);
 
       expect(client.createOrUpdateLabel).toHaveBeenCalledTimes(labels.length);
 

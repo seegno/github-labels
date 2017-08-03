@@ -133,10 +133,10 @@ export default class Client {
   }
 
   /**
-   * Update labels.
+   * Set labels.
    */
 
-  async updateLabels(labels) {
+  async setLabels(labels) {
     const current = await this.getLabels();
 
     // Delete current labels that are not included in the wanted labels.
