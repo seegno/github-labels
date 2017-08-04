@@ -3,7 +3,7 @@
  * Module dependencies.
  */
 
-import Client from './client';
+import Client from 'client';
 
 /**
  * Export `updateLabels`.

@@ -3,8 +3,8 @@
  * Module dependencies.
  */
 
-import { copyLabelsFromRepo, updateLabels } from '../src';
-import Client from '../src/client';
+import { copyLabelsFromRepo, updateLabels } from '';
+import Client from 'client';
 import faker from 'faker';
 
 /**

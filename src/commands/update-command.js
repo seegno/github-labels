@@ -5,7 +5,7 @@
 
 import { get, keys, omit, pick, pickBy, values } from 'lodash';
 import { readFile } from 'fs';
-import { updateLabels } from '../';
+import { updateLabels } from '';
 import Promise from 'bluebird';
 import inquirer from 'inquirer';
 import prettyjson from 'prettyjson';
