@@ -40,12 +40,12 @@ export async function copyFromRepo(args) {
     },
     targetOwner: {
       message: 'What is the target owner name?',
-      name: 'owner',
+      name: 'targetOwner',
       validate: input => !!input
     },
     targetRepo: {
       message: 'What is the target repository name?',
-      name: 'repo',
+      name: 'targetRepo',
       validate: input => !!input
     },
     token: {
