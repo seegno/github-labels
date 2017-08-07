@@ -3,7 +3,7 @@
  * Module dependencies.
  */
 
-import Client from '../src/client';
+import Client from 'client';
 import Github from 'github';
 import HttpError from 'standard-http-error';
 

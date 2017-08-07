@@ -4,8 +4,8 @@
  * Module dependencies.
  */
 
-import { copyFromRepo, copyFromRepoConfig } from '../commands/copy-from-repo-command';
-import { update, updateConfig } from '../commands/update-command';
+import { copyFromRepo, copyFromRepoConfig } from 'commands/copy-from-repo-command';
+import { update, updateConfig } from 'commands/update-command';
 import { version } from '../../package.json';
 import yargs from 'yargs';
 

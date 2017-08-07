@@ -3,7 +3,7 @@
  * Module dependencies.
  */
 
-import { copyLabelsFromRepo } from '../';
+import { copyLabelsFromRepo } from '';
 import { keys, omit, pick, pickBy, values } from 'lodash';
 import inquirer from 'inquirer';
 import prettyjson from 'prettyjson';
