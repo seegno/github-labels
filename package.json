@@ -45,7 +45,6 @@
   ],
   "dependencies": {
     "bluebird": "^3.3.1",
-    "config": "^1.19.0",
     "fs": "^0.0.2",
     "github": "^9.2.0",
     "inquirer": "^3.0.6",
