@@ -1,5 +1,7 @@
 # GitHub Labels
 
+[![npm](https://img.shields.io/npm/v/ghlabels.svg?style=flat-square)](https://npmjs.org/package/ghlabels)
+![node](https://img.shields.io/node/v/ghlabels.svg?style=flat-square)
 [![Build Status](https://img.shields.io/travis/seegno/github-labels/master.svg?style=flat-square)](https://travis-ci.org/seegno/github-labels)
 [![Coverage Status](https://img.shields.io/coveralls/seegno/github-labels/master.svg?style=flat-square)](https://coveralls.io/github/seegno/github-labels?branch=master)
 
