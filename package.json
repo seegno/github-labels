@@ -36,12 +36,13 @@
     "cover": "jest --coverage --forceExit",
     "coveralls": "npm run cover && cat ./coverage/lcov.info | coveralls",
     "lint": "eslint src test",
+    "lint-staged": "lint-staged",
     "test": "jest --forceExit",
     "test-watch": "jest --watch --notify --onlyChanged",
     "version": "npm run changelog --future-release=$npm_package_version && git add -A CHANGELOG.md"
   },
   "pre-commit": [
-    "lint"
+    "lint-staged"
   ],
   "dependencies": {
     "bluebird": "^3.3.1",
@@ -66,6 +67,7 @@
     "eslint-plugin-jest": "^19.0.1",
     "faker": "^4.1.0",
     "jest": "^20.0.4",
+    "lint-staged": "^4.0.3",
     "standard-http-error": "^2.0.0"
   },
   "engines": {
@@ -80,5 +82,12 @@
     ],
     "testEnvironment": "node",
     "testRegex": "(/test/.*\\.test.js)$"
+  },
+  "lint-staged": {
+    "{src,test}/**/*.js": [
+      "eslint",
+      "git add",
+      "jest --findRelatedTests --forceExit"
+    ]
   }
 }
