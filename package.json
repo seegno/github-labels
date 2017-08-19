@@ -1,6 +1,6 @@
 {
   "name": "ghlabels",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "A manager for GitHub issue labels",
   "keywords": [
     "github",
