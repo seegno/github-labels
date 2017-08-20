@@ -1,5 +1,14 @@
 # Changelog
 
+## [v0.1.1](https://github.com/seegno/github-labels/tree/v0.1.1) (2017-08-20)
+[Full Changelog](https://github.com/seegno/github-labels/compare/v0.1.0...v0.1.1)
+
+**Merged pull requests:**
+
+- Update version script to build package [\#38](https://github.com/seegno/github-labels/pull/38) ([nunorafaelrocha](https://github.com/nunorafaelrocha))
+- Add lint-staged to pre-commit hook [\#37](https://github.com/seegno/github-labels/pull/37) ([nunorafaelrocha](https://github.com/nunorafaelrocha))
+- Add npm and node shields [\#36](https://github.com/seegno/github-labels/pull/36) ([nunorafaelrocha](https://github.com/nunorafaelrocha))
+
 ## [v0.1.0](https://github.com/seegno/github-labels/tree/v0.1.0) (2017-08-19)
 **Merged pull requests:**
 
