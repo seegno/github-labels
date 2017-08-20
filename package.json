@@ -39,7 +39,7 @@
     "lint-staged": "lint-staged",
     "test": "jest --forceExit",
     "test-watch": "jest --watch --notify --onlyChanged",
-    "version": "npm run changelog --future-release=$npm_package_version && git add -A CHANGELOG.md"
+    "version": "npm run build && npm run changelog --future-release=$npm_package_version && git add -A CHANGELOG.md dist"
   },
   "pre-commit": [
     "lint-staged"
