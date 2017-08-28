@@ -68,6 +68,7 @@
     "faker": "^4.1.0",
     "jest": "^20.0.4",
     "lint-staged": "^4.0.3",
+    "pre-commit": "^1.2.2",
     "standard-http-error": "^2.0.0"
   },
   "engines": {
