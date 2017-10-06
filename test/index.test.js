@@ -3,7 +3,7 @@
  * Module dependencies.
  */
 
-import { copyLabelsFromRepo, updateLabels } from '';
+import { copyLabelsFromRepo, listLabels, updateLabels } from '';
 import Client from 'client';
 import faker from 'faker';
 
@@ -111,6 +111,36 @@ describe('index', () => {
       expect(Client.mock.calls[1][0]).toEqual({ owner: 'fred', repo: 'waldo' });
       expect(getLabels).toHaveBeenCalledTimes(1);
       expect(setLabels).toHaveBeenCalledWith(expectedLabels);
+    });
+  });
+
+  describe('listLabels', () => {
+    it('should return the parsed result of the call `client.getLabels` with given options', async () => {
+      const expectedLabels = [
+        {
+          color: 'foo',
+          name: 'bar'
+        },
+        {
+          color: 'waldo',
+          name: 'fred'
+        },
+        {
+          color: 'corge',
+          name: 'grault'
+        }
+      ];
+
+      const result = await listLabels({
+        owner: 'fred',
+        repo: 'waldo',
+        token: 'foobar'
+      });
+
+      expect(Client.mock.calls[0][0]).toEqual({ owner: 'fred', repo: 'waldo' });
+      expect(authenticate).toHaveBeenCalledWith('foobar');
+      expect(getLabels).toHaveBeenCalledTimes(1);
+      expect(result).toEqual(expectedLabels);
     });
   });
 });
