@@ -25,7 +25,7 @@ yarn global add ghlabels
 
 ### Basic usage
 
-You can provide options as arguments or leave then blank and they will be asked.
+You can provide options as arguments or leave then blank and they will be prompted.
 
 ```sh
 ghlabels --owner foo --repo bar --token foobar --configFile ./path/somefile
@@ -36,7 +36,13 @@ Note: As an alternative you can provide options as enviroment variables (e.g. GI
 ### Copy from another repo
 
 ```sh
-ghlabels --sourceOwner seegno --sourceRepo github-labels --targetOwner foo --targetRepo bar --token foobar
+ghlabels copy --sourceOwner seegno --sourceRepo github-labels --targetOwner foo --targetRepo bar --token foobar
+```
+
+### List
+
+```sh
+ghlabels list --owner seegno --repo github-labels
 ```
 
 ### Client
@@ -44,12 +50,19 @@ ghlabels --sourceOwner seegno --sourceRepo github-labels --targetOwner foo --tar
 You can also import ghlabels client and use it as a module:
 
 ```js
-import { copyLabelsFromRepo, updateLabels } from 'ghlabels';
+import { copyLabelsFromRepo, listLabels, updateLabels } from 'ghlabels';
 
 // Example of copying labels from a source repo.
 copyLabelsFromRepo({
   owner: 'foo',
   repo: 'bar',
+  token: 'foobar'
+});
+
+// Example of listing all labels from a repo.
+listLabels({
+  owner: 'seegno',
+  repo: 'github-labels',
   token: 'foobar'
 });
 
