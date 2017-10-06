@@ -51,38 +51,8 @@ describe('index', () => {
     }));
   });
 
-  describe('updateLabels', () => {
-    it('should call `updateLabels` with given labels', async () => {
-      const expectedLabels = [
-        {
-          color: faker.commerce.color(),
-          name: faker.lorem.word()
-        },
-        {
-          color: faker.commerce.color(),
-          name: faker.lorem.word()
-        },
-        {
-          color: faker.commerce.color(),
-          name: faker.lorem.word()
-        }
-      ];
-
-      await updateLabels({
-        labels: expectedLabels,
-        owner: 'fred',
-        repo: 'waldo',
-        token: 'foobar'
-      });
-
-      expect(Client.mock.calls[0][0]).toEqual({ owner: 'fred', repo: 'waldo' });
-      expect(authenticate).toHaveBeenCalledWith('foobar');
-      expect(setLabels).toHaveBeenCalledWith(expectedLabels);
-    });
-  });
-
   describe('copyLabelsFromRepo', () => {
-    it('should call `updateLabels` with the labels from the source repository', async () => {
+    it('should call `client.setLabels` with the labels from the source repository', async () => {
       await copyLabelsFromRepo({
         sourceOwner: 'qux',
         sourceRepo: 'corge',
@@ -141,6 +111,36 @@ describe('index', () => {
       expect(authenticate).toHaveBeenCalledWith('foobar');
       expect(getLabels).toHaveBeenCalledTimes(1);
       expect(result).toEqual(expectedLabels);
+    });
+  });
+
+  describe('updateLabels', () => {
+    it('should call `client.setLabels` with given labels', async () => {
+      const labels = [
+        {
+          color: faker.commerce.color(),
+          name: faker.lorem.word()
+        },
+        {
+          color: faker.commerce.color(),
+          name: faker.lorem.word()
+        },
+        {
+          color: faker.commerce.color(),
+          name: faker.lorem.word()
+        }
+      ];
+
+      await updateLabels({
+        labels,
+        owner: 'fred',
+        repo: 'waldo',
+        token: 'foobar'
+      });
+
+      expect(Client.mock.calls[0][0]).toEqual({ owner: 'fred', repo: 'waldo' });
+      expect(authenticate).toHaveBeenCalledWith('foobar');
+      expect(setLabels).toHaveBeenCalledWith(labels);
     });
   });
 });
