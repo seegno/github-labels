@@ -5,6 +5,7 @@
  */
 
 import { copyFromRepo, copyFromRepoConfig } from 'commands/copy-from-repo-command';
+import { list, listConfig } from 'commands/list-command';
 import { update, updateConfig } from 'commands/update-command';
 import { version } from '../../package.json';
 import yargs from 'yargs';
@@ -18,6 +19,7 @@ yargs // eslint-disable-line no-unused-expressions
   .env('GITHUB_LABELS')
   .command(['*', 'update'], 'Update repository labels', updateConfig, update)
   .command('copy', 'Copy labels from repository', copyFromRepoConfig, copyFromRepo)
+  .command('list', 'List labels from repository', listConfig, list)
   .help('h')
   .alias('h', 'help')
   .version('version', 'Version', version)

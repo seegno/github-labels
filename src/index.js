@@ -6,6 +6,26 @@
 import Client from 'client';
 
 /**
+ * Export `listLabels`.
+ */
+
+export async function listLabels(options) {
+  const { owner, repo, token } = options;
+
+  // Instantiate client.
+  const client = new Client({ owner, repo });
+
+  // Authenticate user.
+  client.authenticate(token);
+
+  // Get source labels.
+  const labels = await client.getLabels();
+
+  // Parsed labels.
+  return labels.map(({ color, name }) => ({ color, name }));
+}
+
+/**
  * Export `updateLabels`.
  */
 
