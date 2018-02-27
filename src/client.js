@@ -52,11 +52,17 @@ export default class Client {
    * Create a new label with given `name` and `color`.
    */
 
-  async createLabel(repository, name, color) {
+  async createLabel({
+    color,
+    description,
+    name,
+    repository
+  }) {
     const { owner, repo } = getRepositoryOptions(repository);
 
     return await this.github.issues.createLabel({
       color,
+      description,
       name,
       owner,
       repo
@@ -67,7 +73,13 @@ export default class Client {
    * Create or update a label with given `name`.
    */
 
-  async createOrUpdateLabel(repository, name, color) {
+  async createOrUpdateLabel({
+    color,
+    description,
+    name,
+    repository
+  }) {
+    let method = this.createLabel;
     let label = false;
 
     try {
@@ -79,10 +91,15 @@ export default class Client {
     }
 
     if (label) {
-      return await this.updateLabel(repository, name, color);
+      method = this.updateLabel;
     }
 
-    return await this.createLabel(repository, name, color);
+    return await method({
+      color,
+      description,
+      name,
+      repository
+    });
   }
 
   /**
@@ -132,11 +149,17 @@ export default class Client {
    * Update an existing label with given `color`.
    */
 
-  async updateLabel(repository, name, color) {
+  async updateLabel({
+    color,
+    description,
+    name,
+    repository
+  }) {
     const { owner, repo } = getRepositoryOptions(repository);
 
     return await this.github.issues.updateLabel({
       color,
+      description,
       name,
       oldname: name,
       owner,
@@ -159,8 +182,13 @@ export default class Client {
     }
 
     // Create or update wanted labels.
-    for (const { color, name } of labels) {
-      await this.createOrUpdateLabel(repository, name, color);
+    for (const { color, description, name } of labels) {
+      await this.createOrUpdateLabel({
+        color,
+        description,
+        name,
+        repository
+      });
     }
   }
 }
