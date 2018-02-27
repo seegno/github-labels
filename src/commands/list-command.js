@@ -14,10 +14,9 @@ import prettyjson from 'prettyjson';
 
 export function listConfig(yargs) {
   yargs
-    .option('owner', { demand: false, describe: 'Repository owner', type: 'string' })
-    .option('repo', { demand: false, describe: 'Repository name', type: 'string' })
+    .option('repository', { demand: false, describe: 'Repository name (ex. seegno/github-labels)', type: 'string' })
     .option('token', { demand: true, describe: 'GitHub authentication token', type: 'string' })
-    .example('$0 --repo foo --token bar --configFile ./path/somefile');
+    .example('$0 --repository foo/bar --token bar --configFile ./path/somefile');
 }
 
 /**
@@ -26,14 +25,9 @@ export function listConfig(yargs) {
 
 export async function list(args) {
   const questions = {
-    owner: {
-      message: 'What is the owner name?',
-      name: 'owner',
-      validate: input => !!input
-    },
-    repo: {
-      message: 'What is the repository name?',
-      name: 'repo',
+    repository: {
+      message: 'What is the repository name? (ex. seegno/github-labels)',
+      name: 'repository',
       validate: input => !!input
     },
     token: {

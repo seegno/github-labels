@@ -10,16 +10,13 @@ import Client from 'client';
  */
 
 export async function listLabels(options) {
-  const { owner, repo, token } = options;
+  const { repository, token } = options;
 
   // Instantiate client.
-  const client = new Client({ owner, repo });
-
-  // Authenticate user.
-  client.authenticate(token);
+  const client = new Client({ token });
 
   // Get source labels.
-  const labels = await client.getLabels();
+  const labels = await client.getLabels(repository);
 
   // Parsed labels.
   return labels.map(({ color, name }) => ({ color, name }));
@@ -30,16 +27,13 @@ export async function listLabels(options) {
  */
 
 export async function updateLabels(options) {
-  const { owner, repo, token, labels } = options;
+  const { repository, token, labels } = options;
 
   // Instantiate client.
-  const client = new Client({ owner, repo });
-
-  // Authenticate user.
-  client.authenticate(token);
+  const client = new Client({ token });
 
   // Set the repository labels using the labels in the configuration file.
-  await client.setLabels(labels);
+  await client.setLabels(repository, labels);
 }
 
 /**
@@ -47,22 +41,17 @@ export async function updateLabels(options) {
  */
 
 export async function copyLabelsFromRepo(options) {
-  const { sourceOwner, sourceRepo, targetOwner, targetRepo, token } = options;
+  const { source, target, token } = options;
 
   // Instantiate clients.
-  const clientSource = new Client({ owner: sourceOwner, repo: sourceRepo });
-  const clientTarget = new Client({ owner: targetOwner, repo: targetRepo });
-
-  // Authenticate user.
-  clientSource.authenticate(token);
-  clientTarget.authenticate(token);
+  const client = new Client({ token });
 
   // Get source labels.
-  const rawLabels = await clientSource.getLabels();
+  const rawLabels = await client.getLabels(source);
 
   // Parsed labels.
   const labels = rawLabels.map(({ color, name }) => ({ color, name }));
 
   // Set the repository labels using the labels in the source repository.
-  await clientTarget.setLabels(labels);
+  await client.setLabels(target, labels);
 }
