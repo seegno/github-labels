@@ -5,7 +5,6 @@
 
 import { differenceBy, get, has } from 'lodash';
 import Github from 'github';
-import Promise from 'bluebird';
 
 /**
  * GitHub configuration.
@@ -20,6 +19,20 @@ const config = {
 };
 
 /**
+ * Get repository owner and name and include a validation.
+ */
+
+const getRepositoryOptions = repository => {
+  const [owner, repo] = repository.split('/');
+
+  if (!owner || !repo) {
+    throw new Error('Malformed repository option');
+  }
+
+  return { owner, repo };
+};
+
+/**
  * Export `Client`.
  */
 
@@ -29,20 +42,9 @@ export default class Client {
    * Constructor.
    */
 
-  constructor({ owner, repo, options }) {
+  constructor({ token, ...options }) {
     this.github = new Github({ ...config, ...options });
-    this.owner = owner;
-    this.repo = repo;
 
-    Promise.promisifyAll(this.github.issues);
-    Promise.promisifyAll(this.github);
-  }
-
-  /**
-   * Authenticate.
-   */
-
-  authenticate(token) {
     this.github.authenticate({ token, type: 'oauth' });
   }
 
@@ -50,12 +52,14 @@ export default class Client {
    * Create a new label with given `name` and `color`.
    */
 
-  async createLabel(name, color) {
-    return await this.github.issues.createLabelAsync({
+  async createLabel(repository, name, color) {
+    const { owner, repo } = getRepositoryOptions(repository);
+
+    return await this.github.issues.createLabel({
       color,
       name,
-      owner: this.owner,
-      repo: this.repo
+      owner,
+      repo
     });
   }
 
@@ -63,11 +67,11 @@ export default class Client {
    * Create or update a label with given `name`.
    */
 
-  async createOrUpdateLabel(name, color) {
+  async createOrUpdateLabel(repository, name, color) {
     let label = false;
 
     try {
-      label = await this.getLabel(name);
+      label = await this.getLabel(repository, name);
     } catch (err) {
       if (!has(err, 'code') || get(err, 'code') !== 404) {
         throw err;
@@ -75,21 +79,23 @@ export default class Client {
     }
 
     if (label) {
-      return await this.updateLabel(name, color);
+      return await this.updateLabel(repository, name, color);
     }
 
-    return await this.createLabel(name, color);
+    return await this.createLabel(repository, name, color);
   }
 
   /**
    * Delete label by given `name`.
    */
 
-  async deleteLabel(name) {
-    return await this.github.issues.deleteLabelAsync({
+  async deleteLabel(repository, name) {
+    const { owner, repo } = getRepositoryOptions(repository);
+
+    return await this.github.issues.deleteLabel({
       name,
-      owner: this.owner,
-      repo: this.repo
+      owner,
+      repo
     });
   }
 
@@ -97,10 +103,12 @@ export default class Client {
    * Get all repo labels.
    */
 
-  async getLabels() {
-    const result = await this.github.issues.getLabelsAsync({
-      owner: this.owner,
-      repo: this.repo
+  async getLabels(repository) {
+    const { owner, repo } = getRepositoryOptions(repository);
+
+    const result = await this.github.issues.getLabels({
+      owner,
+      repo
     });
 
     return result.data;
@@ -110,11 +118,13 @@ export default class Client {
    * Get label by given `name`.
    */
 
-  async getLabel(name) {
-    return await this.github.issues.getLabelAsync({
+  async getLabel(repository, name) {
+    const { owner, repo } = getRepositoryOptions(repository);
+
+    return await this.github.issues.getLabel({
       name,
-      owner: this.owner,
-      repo: this.repo
+      owner,
+      repo
     });
   }
 
@@ -122,13 +132,15 @@ export default class Client {
    * Update an existing label with given `color`.
    */
 
-  async updateLabel(name, color) {
-    return await this.github.issues.updateLabelAsync({
+  async updateLabel(repository, name, color) {
+    const { owner, repo } = getRepositoryOptions(repository);
+
+    return await this.github.issues.updateLabel({
       color,
       name,
       oldname: name,
-      owner: this.owner,
-      repo: this.repo
+      owner,
+      repo
     });
   }
 
@@ -136,19 +148,19 @@ export default class Client {
    * Set labels.
    */
 
-  async setLabels(labels) {
-    const current = await this.getLabels();
+  async setLabels(repository, labels) {
+    const current = await this.getLabels(repository);
 
     // Delete current labels that are not included in the wanted labels.
     const deprecated = differenceBy(current, labels, 'name');
 
     for (const { name } of deprecated) {
-      await this.deleteLabel(name);
+      await this.deleteLabel(repository, name);
     }
 
     // Create or update wanted labels.
     for (const { color, name } of labels) {
-      await this.createOrUpdateLabel(name, color);
+      await this.createOrUpdateLabel(repository, name, color);
     }
   }
 }
