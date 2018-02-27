@@ -14,10 +14,8 @@ import prettyjson from 'prettyjson';
 
 export function copyFromRepoConfig(yargs) {
   yargs
-    .option('sourceOwner', { demand: false, describe: 'Source repository owner', type: 'string' })
-    .option('sourceRepo', { demand: false, describe: 'Source repository name', type: 'string' })
-    .option('targetOwner', { demand: false, describe: 'Target repository owner', type: 'string' })
-    .option('targetRepo', { demand: false, describe: 'Target repository name', type: 'string' })
+    .option('source', { demand: false, describe: 'Source repository name (ex. seegno/github-labels)', type: 'string' })
+    .option('target', { demand: false, describe: 'Target repository name (ex. seegno/github-labels)', type: 'string' })
     .option('token', { demand: true, describe: 'GitHub authentication token', type: 'string' })
     .example('$0 --owner foo --repo bar --sourceOwner qux --sourceRepo corge --token foobar');
 }
@@ -28,24 +26,14 @@ export function copyFromRepoConfig(yargs) {
 
 export async function copyFromRepo(args) {
   const questions = {
-    sourceOwner: {
-      message: 'What is the source owner name?',
-      name: 'sourceOwner',
+    source: {
+      message: 'What is the source repository name? (ex. seegno/github-labels)',
+      name: 'source',
       validate: input => !!input
     },
-    sourceRepo: {
-      message: 'What is the source repository name?',
-      name: 'sourceRepo',
-      validate: input => !!input
-    },
-    targetOwner: {
-      message: 'What is the target owner name?',
-      name: 'targetOwner',
-      validate: input => !!input
-    },
-    targetRepo: {
-      message: 'What is the target repository name?',
-      name: 'targetRepo',
+    target: {
+      message: 'What is the target repository name? (ex. seegno/github-labels)',
+      name: 'target',
       validate: input => !!input
     },
     token: {
@@ -61,7 +49,11 @@ export async function copyFromRepo(args) {
   console.log('Copying labels from repo...'); // eslint-disable-line no-console
   console.log(prettyjson.render(pick(options, keys(pickBy(questions))))); // eslint-disable-line no-console
 
-  await copyLabelsFromRepo(options);
+  try {
+    await copyLabelsFromRepo(options);
 
-  return console.log('Copy completed!'); // eslint-disable-line no-console
+    console.log('Copy completed!'); // eslint-disable-line no-console
+  } catch (e) {
+    console.error(e.message); // eslint-disable-line no-console
+  }
 }
