@@ -72,7 +72,7 @@
     "standard-http-error": "^2.0.0"
   },
   "engines": {
-    "node": ">=4"
+    "node": ">=6"
   },
   "jest": {
     "coverageDirectory": "coverage",
