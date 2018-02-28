@@ -163,4 +163,5 @@ export default class Client {
       await this.createOrUpdateLabel(repository, name, color);
     }
   }
+
 }
