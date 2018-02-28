@@ -84,7 +84,6 @@
   "lint-staged": {
     "{src,test}/**/*.js": [
       "eslint",
-      "git add",
       "jest --findRelatedTests --forceExit"
     ]
   }
