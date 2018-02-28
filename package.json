@@ -47,7 +47,7 @@
   "dependencies": {
     "bluebird": "^3.3.1",
     "fs": "^0.0.2",
-    "github": "^9.2.0",
+    "github": "^11.0.0",
     "inquirer": "^3.0.6",
     "lodash": "^4.3.0",
     "prettyjson": "^1.1.3",

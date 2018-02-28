@@ -18,12 +18,10 @@ jest.mock('../src/client');
  */
 
 describe('index', () => {
-  let authenticate;
   let getLabels;
   let setLabels;
 
   beforeEach(() => {
-    authenticate = jest.fn();
     setLabels = jest.fn();
     getLabels = jest.fn(() => [
       {
@@ -45,7 +43,6 @@ describe('index', () => {
 
     Client.mockClear();
     Client.mockImplementation(() => ({
-      authenticate,
       getLabels,
       setLabels
     }));
@@ -54,10 +51,8 @@ describe('index', () => {
   describe('copyLabelsFromRepo', () => {
     it('should call `client.setLabels` with the labels from the source repository', async () => {
       await copyLabelsFromRepo({
-        sourceOwner: 'qux',
-        sourceRepo: 'corge',
-        targetOwner: 'fred',
-        targetRepo: 'waldo',
+        source: 'corge',
+        target: 'waldo',
         token: 'foobar'
       });
 
@@ -76,11 +71,12 @@ describe('index', () => {
         }
       ];
 
-      expect(Client.mock.instances.length).toEqual(2);
-      expect(Client.mock.calls[0][0]).toEqual({ owner: 'qux', repo: 'corge' });
-      expect(Client.mock.calls[1][0]).toEqual({ owner: 'fred', repo: 'waldo' });
+      expect(Client.mock.instances.length).toEqual(1);
+      expect(Client.mock.calls[0][0]).toEqual({ token: 'foobar' });
       expect(getLabels).toHaveBeenCalledTimes(1);
-      expect(setLabels).toHaveBeenCalledWith(expectedLabels);
+      expect(getLabels).toHaveBeenCalledWith('corge');
+      expect(setLabels).toHaveBeenCalledTimes(1);
+      expect(setLabels).toHaveBeenCalledWith('waldo', expectedLabels);
     });
   });
 
@@ -102,14 +98,14 @@ describe('index', () => {
       ];
 
       const result = await listLabels({
-        owner: 'fred',
-        repo: 'waldo',
+        repository: 'waldo',
         token: 'foobar'
       });
 
-      expect(Client.mock.calls[0][0]).toEqual({ owner: 'fred', repo: 'waldo' });
-      expect(authenticate).toHaveBeenCalledWith('foobar');
+      expect(Client.mock.instances.length).toEqual(1);
+      expect(Client.mock.calls[0][0]).toEqual({ token: 'foobar' });
       expect(getLabels).toHaveBeenCalledTimes(1);
+      expect(getLabels).toHaveBeenCalledWith('waldo');
       expect(result).toEqual(expectedLabels);
     });
   });
@@ -133,14 +129,14 @@ describe('index', () => {
 
       await updateLabels({
         labels,
-        owner: 'fred',
-        repo: 'waldo',
+        repository: 'waldo',
         token: 'foobar'
       });
 
-      expect(Client.mock.calls[0][0]).toEqual({ owner: 'fred', repo: 'waldo' });
-      expect(authenticate).toHaveBeenCalledWith('foobar');
-      expect(setLabels).toHaveBeenCalledWith(labels);
+      expect(Client.mock.instances.length).toEqual(1);
+      expect(Client.mock.calls[0][0]).toEqual({ token: 'foobar' });
+      expect(setLabels).toHaveBeenCalledTimes(1);
+      expect(setLabels).toHaveBeenCalledWith('waldo', labels);
     });
   });
 });

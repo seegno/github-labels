@@ -22,11 +22,10 @@ const readFileAsync = Promise.promisify(readFile);
 
 export function updateConfig(yargs) {
   yargs
-    .option('configFile', { demand: false, describe: 'Configuration file', type: 'string' })
-    .option('owner', { demand: false, describe: 'Repository owner', type: 'string' })
-    .option('repo', { demand: false, describe: 'Repository name', type: 'string' })
+    .option('file', { demand: false, describe: 'Configuration file', type: 'string' })
+    .option('repository', { demand: false, describe: 'Repository name (ex. seegno/github-labels)', type: 'string' })
     .option('token', { demand: true, describe: 'GitHub authentication token', type: 'string' })
-    .example('$0 --owner foo --repo bar --token foobar --configFile ./path/somefile');
+    .example('$0 --repository foo/bar --token foobar --file ./path/somefile');
 }
 
 /**
@@ -35,19 +34,14 @@ export function updateConfig(yargs) {
 
 export async function update(args) {
   const questions = {
-    configFile: {
+    file: {
       message: 'What is the configuration file path?',
-      name: 'configFile',
+      name: 'file',
       validate: input => !!input
     },
-    owner: {
-      message: 'What is the owner name?',
-      name: 'owner',
-      validate: input => !!input
-    },
-    repo: {
-      message: 'What is the repository name?',
-      name: 'repo',
+    repository: {
+      message: 'What is the repository name? (ex. seegno/github-labels)',
+      name: 'repository',
       validate: input => !!input
     },
     token: {
@@ -63,11 +57,15 @@ export async function update(args) {
   console.log('Updating labels...'); // eslint-disable-line no-console
   console.log(prettyjson.render(pick(options, keys(pickBy(questions))))); // eslint-disable-line no-console
 
-  // Retrieve labels from file.
-  const content = await readFileAsync(get(options, 'configFile'), 'utf8');
-  const labels = JSON.parse(content);
+  try {
+    // Retrieve labels from file.
+    const content = await readFileAsync(get(options, 'file'), 'utf8');
+    const labels = JSON.parse(content);
 
-  await updateLabels({ ...options, labels });
+    await updateLabels({ ...options, labels });
 
-  return console.log('Update completed!'); // eslint-disable-line no-console
+    console.log('Update completed!'); // eslint-disable-line no-console
+  } catch (e) {
+    console.log(e.message); // eslint-disable-line no-console
+  }
 }
