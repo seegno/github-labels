@@ -1,5 +1,17 @@
 # Changelog
 
+## [v0.2.0](https://github.com/seegno/github-labels/tree/v0.2.0) (2018-06-25)
+[Full Changelog](https://github.com/seegno/github-labels/compare/v0.1.1...v0.2.0)
+
+**Merged pull requests:**
+
+- Update eslint dependencies [\#45](https://github.com/seegno/github-labels/pull/45) ([nunorafaelrocha](https://github.com/nunorafaelrocha))
+- Fix lint-staged configuration [\#44](https://github.com/seegno/github-labels/pull/44) ([nunorafaelrocha](https://github.com/nunorafaelrocha))
+- Remove node 4 support [\#43](https://github.com/seegno/github-labels/pull/43) ([nunorafaelrocha](https://github.com/nunorafaelrocha))
+- Update program options [\#42](https://github.com/seegno/github-labels/pull/42) ([nunorafaelrocha](https://github.com/nunorafaelrocha))
+- Add list command [\#40](https://github.com/seegno/github-labels/pull/40) ([nunorafaelrocha](https://github.com/nunorafaelrocha))
+- Add pre-commit dependency [\#39](https://github.com/seegno/github-labels/pull/39) ([nunorafaelrocha](https://github.com/nunorafaelrocha))
+
 ## [v0.1.1](https://github.com/seegno/github-labels/tree/v0.1.1) (2017-08-20)
 [Full Changelog](https://github.com/seegno/github-labels/compare/v0.1.0...v0.1.1)
 

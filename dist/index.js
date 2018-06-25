@@ -3,28 +3,50 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.copyLabelsFromRepo = exports.updateLabels = undefined;
+exports.copyLabelsFromRepo = exports.updateLabels = exports.listLabels = undefined;
+
+/**
+ * Export `listLabels`.
+ */
+
+let listLabels = exports.listLabels = (() => {
+  var _ref = _asyncToGenerator(function* (options) {
+    const { repository, token } = options;
+
+    // Instantiate client.
+    const client = new _client2.default({ token });
+
+    // Get source labels.
+    const labels = yield client.getLabels(repository);
+
+    // Parsed labels.
+    return labels.map(function ({ color, name }) {
+      return { color, name };
+    });
+  });
+
+  return function listLabels(_x) {
+    return _ref.apply(this, arguments);
+  };
+})();
 
 /**
  * Export `updateLabels`.
  */
 
 let updateLabels = exports.updateLabels = (() => {
-  var _ref = _asyncToGenerator(function* (options) {
-    const { owner, repo, token, labels } = options;
+  var _ref2 = _asyncToGenerator(function* (options) {
+    const { repository, token, labels } = options;
 
     // Instantiate client.
-    const client = new _client2.default({ owner, repo });
-
-    // Authenticate user.
-    client.authenticate(token);
+    const client = new _client2.default({ token });
 
     // Set the repository labels using the labels in the configuration file.
-    yield client.setLabels(labels);
+    yield client.setLabels(repository, labels);
   });
 
-  return function updateLabels(_x) {
-    return _ref.apply(this, arguments);
+  return function updateLabels(_x2) {
+    return _ref2.apply(this, arguments);
   };
 })();
 
@@ -33,19 +55,14 @@ let updateLabels = exports.updateLabels = (() => {
  */
 
 let copyLabelsFromRepo = exports.copyLabelsFromRepo = (() => {
-  var _ref2 = _asyncToGenerator(function* (options) {
-    const { sourceOwner, sourceRepo, targetOwner, targetRepo, token } = options;
+  var _ref3 = _asyncToGenerator(function* (options) {
+    const { source, target, token } = options;
 
     // Instantiate clients.
-    const clientSource = new _client2.default({ owner: sourceOwner, repo: sourceRepo });
-    const clientTarget = new _client2.default({ owner: targetOwner, repo: targetRepo });
-
-    // Authenticate user.
-    clientSource.authenticate(token);
-    clientTarget.authenticate(token);
+    const client = new _client2.default({ token });
 
     // Get source labels.
-    const rawLabels = yield clientSource.getLabels();
+    const rawLabels = yield client.getLabels(source);
 
     // Parsed labels.
     const labels = rawLabels.map(function ({ color, name }) {
@@ -53,11 +70,11 @@ let copyLabelsFromRepo = exports.copyLabelsFromRepo = (() => {
     });
 
     // Set the repository labels using the labels in the source repository.
-    yield clientTarget.setLabels(labels);
+    yield client.setLabels(target, labels);
   });
 
-  return function copyLabelsFromRepo(_x2) {
-    return _ref2.apply(this, arguments);
+  return function copyLabelsFromRepo(_x3) {
+    return _ref3.apply(this, arguments);
   };
 })();
 

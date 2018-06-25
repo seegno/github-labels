@@ -14,23 +14,16 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 let update = exports.update = (() => {
   var _ref = _asyncToGenerator(function* (args) {
     const questions = {
-      configFile: {
+      file: {
         message: 'What is the configuration file path?',
-        name: 'configFile',
+        name: 'file',
         validate: function (input) {
           return !!input;
         }
       },
-      owner: {
-        message: 'What is the owner name?',
-        name: 'owner',
-        validate: function (input) {
-          return !!input;
-        }
-      },
-      repo: {
-        message: 'What is the repository name?',
-        name: 'repo',
+      repository: {
+        message: 'What is the repository name? (ex. seegno/github-labels)',
+        name: 'repository',
         validate: function (input) {
           return !!input;
         }
@@ -50,13 +43,17 @@ let update = exports.update = (() => {
     console.log('Updating labels...'); // eslint-disable-line no-console
     console.log(_prettyjson2.default.render((0, _lodash.pick)(options, (0, _lodash.keys)((0, _lodash.pickBy)(questions))))); // eslint-disable-line no-console
 
-    // Retrieve labels from file.
-    const content = yield readFileAsync((0, _lodash.get)(options, 'configFile'), 'utf8');
-    const labels = JSON.parse(content);
+    try {
+      // Retrieve labels from file.
+      const content = yield readFileAsync((0, _lodash.get)(options, 'file'), 'utf8');
+      const labels = JSON.parse(content);
 
-    yield (0, _.updateLabels)(_extends({}, options, { labels }));
+      yield (0, _.updateLabels)(_extends({}, options, { labels }));
 
-    return console.log('Update completed!'); // eslint-disable-line no-console
+      console.log('Update completed!'); // eslint-disable-line no-console
+    } catch (e) {
+      console.log(e.message); // eslint-disable-line no-console
+    }
   });
 
   return function update(_x) {
@@ -102,5 +99,5 @@ const readFileAsync = _bluebird2.default.promisify(_fs.readFile);
  */
 
 function updateConfig(yargs) {
-  yargs.option('configFile', { demand: false, describe: 'Configuration file', type: 'string' }).option('owner', { demand: false, describe: 'Repository owner', type: 'string' }).option('repo', { demand: false, describe: 'Repository name', type: 'string' }).option('token', { demand: true, describe: 'GitHub authentication token', type: 'string' }).example('$0 --owner foo --repo bar --token foobar --configFile ./path/somefile');
+  yargs.option('file', { demand: false, describe: 'Configuration file', type: 'string' }).option('repository', { demand: false, describe: 'Repository name (ex. seegno/github-labels)', type: 'string' }).option('token', { demand: true, describe: 'GitHub authentication token', type: 'string' }).example('$0 --repository foo/bar --token foobar --file ./path/somefile');
 }

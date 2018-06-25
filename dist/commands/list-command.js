@@ -3,27 +3,20 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.copyFromRepo = undefined;
+exports.list = undefined;
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 /**
- * Copy command.
+ * List command.
  */
 
-let copyFromRepo = exports.copyFromRepo = (() => {
+let list = exports.list = (() => {
   var _ref = _asyncToGenerator(function* (args) {
     const questions = {
-      source: {
-        message: 'What is the source repository name? (ex. seegno/github-labels)',
-        name: 'source',
-        validate: function (input) {
-          return !!input;
-        }
-      },
-      target: {
-        message: 'What is the target repository name? (ex. seegno/github-labels)',
-        name: 'target',
+      repository: {
+        message: 'What is the repository name? (ex. seegno/github-labels)',
+        name: 'repository',
         validate: function (input) {
           return !!input;
         }
@@ -40,28 +33,31 @@ let copyFromRepo = exports.copyFromRepo = (() => {
     const answers = yield _inquirer2.default.prompt((0, _lodash.values)((0, _lodash.omit)(questions, (0, _lodash.keys)((0, _lodash.pickBy)(args)))));
     const options = _extends({}, args, answers);
 
-    console.log('Copying labels from repo...'); // eslint-disable-line no-console
+    console.log('Listing labels...'); // eslint-disable-line no-console
     console.log(_prettyjson2.default.render((0, _lodash.pick)(options, (0, _lodash.keys)((0, _lodash.pickBy)(questions))))); // eslint-disable-line no-console
 
     try {
-      yield (0, _.copyLabelsFromRepo)(options);
+      const labels = yield (0, _.listLabels)(_extends({}, options));
 
-      console.log('Copy completed!'); // eslint-disable-line no-console
+      console.log('Labels:'); // eslint-disable-line no-console
+      console.log(_prettyjson2.default.render(labels)); // eslint-disable-line no-console
+
+      console.log('Listing completed!'); // eslint-disable-line no-console
     } catch (e) {
       console.error(e.message); // eslint-disable-line no-console
     }
   });
 
-  return function copyFromRepo(_x) {
+  return function list(_x) {
     return _ref.apply(this, arguments);
   };
 })();
 
-exports.copyFromRepoConfig = copyFromRepoConfig;
-
-var _ = require('..');
+exports.listConfig = listConfig;
 
 var _lodash = require('lodash');
+
+var _ = require('..');
 
 var _inquirer = require('inquirer');
 
@@ -79,9 +75,9 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
  */
 
 /**
- * Export `copyFromRepoConfig`.
+ * Export `listConfig`.
  */
 
-function copyFromRepoConfig(yargs) {
-  yargs.option('source', { demand: false, describe: 'Source repository name (ex. seegno/github-labels)', type: 'string' }).option('target', { demand: false, describe: 'Target repository name (ex. seegno/github-labels)', type: 'string' }).option('token', { demand: true, describe: 'GitHub authentication token', type: 'string' }).example('$0 --source foo/bar --target qux/corge --token foobar');
+function listConfig(yargs) {
+  yargs.option('repository', { demand: false, describe: 'Repository name (ex. seegno/github-labels)', type: 'string' }).option('token', { demand: true, describe: 'GitHub authentication token', type: 'string' }).example('$0 --repository foo/bar --token');
 }
