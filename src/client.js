@@ -4,7 +4,7 @@
  */
 
 import { differenceBy, get, has } from 'lodash';
-import Github from 'github';
+import Github from '@octokit/rest';
 
 /**
  * GitHub configuration.
@@ -12,8 +12,6 @@ import Github from 'github';
 
 const config = {
   debug: false,
-  host: 'api.github.com',
-  protocol: 'https',
   timeout: 5000,
   version: '3.0.0'
 };
@@ -137,8 +135,8 @@ export default class Client {
 
     return await this.github.issues.updateLabel({
       color,
+      current_name: name, // eslint-disable-line id-match
       name,
-      oldname: name,
       owner,
       repo
     });
