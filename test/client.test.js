@@ -4,14 +4,14 @@
  */
 
 import Client from 'client';
-import Github from 'github';
+import Github from '@octokit/rest';
 import HttpError from 'standard-http-error';
 
 /**
  * Jest mocks.
  */
 
-jest.mock('github');
+jest.mock('@octokit/rest');
 
 /**
  * Test `Client`.
@@ -231,7 +231,12 @@ describe('Client', () => {
       client.updateLabel(repository, 'foo', 'bar');
 
       expect(client.github.issues.updateLabel).toHaveBeenCalledTimes(1);
-      expect(client.github.issues.updateLabel).toHaveBeenCalledWith({ ...repositoryOptions, color: 'bar', name: 'foo', oldname: 'foo' });
+      expect(client.github.issues.updateLabel).toHaveBeenCalledWith({
+        ...repositoryOptions,
+        color: 'bar',
+        current_name: 'foo', // eslint-disable-line id-match
+        name: 'foo'
+      });
     });
   });
 
