@@ -1,11 +1,12 @@
 {
+  "presets": ["@babel/preset-env"],
   "plugins": [
     ["module-resolver", {
       "alias": {
         "test": "./test"
       },
       "root": ["./src"]
-    }]
-  ],
-  "presets": ["es2015-node", "stage-1"]
+    }],
+    ["lodash"]
+  ]
 }
