@@ -3,18 +3,14 @@
  * Module dependencies.
  */
 
+import { Octokit } from '@octokit/rest';
 import { differenceBy, get, has } from 'lodash';
-import Github from '@octokit/rest';
 
 /**
- * GitHub configuration.
+ * GitHub timeout default value.
  */
 
-const config = {
-  debug: false,
-  timeout: 5000,
-  version: '3.0.0'
-};
+const defaultTimeout = 5000;
 
 /**
  * Get repository owner and name and include a validation.
@@ -41,9 +37,11 @@ export default class Client {
    */
 
   constructor({ token, ...options }) {
-    this.github = new Github({ ...config, ...options });
-
-    this.github.authenticate({ token, type: 'oauth' });
+    this.github = new Octokit({
+      auth: token,
+      request: { timeout: defaultTimeout },
+      ...options
+    });
   }
 
   /**
@@ -71,7 +69,7 @@ export default class Client {
     try {
       label = await this.getLabel(repository, name);
     } catch (err) {
-      if (!has(err, 'code') || get(err, 'code') !== 404) {
+      if (!has(err, 'status') || get(err, 'status') !== 404) {
         throw err;
       }
     }
@@ -104,7 +102,7 @@ export default class Client {
   async getLabels(repository) {
     const { owner, repo } = getRepositoryOptions(repository);
 
-    const result = await this.github.issues.getLabels({
+    const result = await this.github.issues.listLabelsForRepo({
       owner,
       repo
     });

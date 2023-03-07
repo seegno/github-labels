@@ -3,9 +3,8 @@
  * Module dependencies.
  */
 
+import { Octokit } from '@octokit/rest';
 import Client from 'client';
-import Github from '@octokit/rest';
-import HttpError from 'standard-http-error';
 
 /**
  * Jest mocks.
@@ -21,7 +20,6 @@ describe('Client', () => {
   const defaultOptions = { token: 'foobiz' };
   const repository = 'corge/waldo';
   const repositoryOptions = { owner: 'corge', repo: 'waldo' };
-  let authenticate;
   let client;
   let createLabel;
   let deleteLabel;
@@ -31,7 +29,6 @@ describe('Client', () => {
   let updateLabels;
 
   beforeEach(() => {
-    authenticate = jest.fn();
     createLabel = jest.fn();
     deleteLabel = jest.fn();
     getLabel = jest.fn();
@@ -46,19 +43,14 @@ describe('Client', () => {
       updateLabels
     };
 
-    Github.mockImplementation(() => ({ authenticate, issues }));
+    Octokit.mockImplementation(() => ({ issues }));
 
     client = new Client(defaultOptions);
   });
 
   describe('constructor', () => {
     it('should create an instance of `client` with given arguments', () => {
-      expect(client.github).toEqual({ authenticate, issues });
-    });
-
-    it('should call `github.authenticate` with given token and type as `oauth`', () => {
-      expect(client.github.authenticate).toHaveBeenCalledTimes(1);
-      expect(client.github.authenticate).toHaveBeenCalledWith({ token: 'foobiz', type: 'oauth' });
+      expect(client.github).toEqual({ issues });
     });
   });
 
@@ -96,19 +88,30 @@ describe('Client', () => {
     });
 
     it('should throw if `getLabel` throws an error with code different than 404', async () => {
-      client.getLabel = jest.fn(() => { throw new HttpError(100); });
+      client.getLabel = jest.fn(() => {
+        const err = new Error('');
+
+        err.status = 100;
+        throw err;
+      });
 
       try {
         await client.createOrUpdateLabel(repository);
 
         fail();
       } catch (e) {
-        expect(e.code).toBe(100);
+        expect(e.status).toBe(100);
       }
     });
 
     it('should call `createLabel` with given `repository`, `name` and `color` if `getLabel` throws an error with code 404', async () => {
-      client.getLabel = jest.fn(() => { throw new HttpError(404); });
+      client.getLabel = jest.fn(() => {
+        const err = new Error('404 not found');
+
+        err.status = 404;
+        throw err;
+      });
+
       client.updateLabel = jest.fn();
       client.createLabel = jest.fn(() => Promise.resolve('foobiz'));
 
@@ -179,15 +182,15 @@ describe('Client', () => {
     });
 
     it('should call `github.issues.getLabels` with repository options', () => {
-      client.github.issues.getLabels = jest.fn(() => true);
+      client.github.issues.listLabelsForRepo = jest.fn(() => true);
       client.getLabels(repository, 'foobar');
 
-      expect(client.github.issues.getLabels).toHaveBeenCalledTimes(1);
-      expect(client.github.issues.getLabels).toHaveBeenCalledWith({ ...repositoryOptions });
+      expect(client.github.issues.listLabelsForRepo).toHaveBeenCalledTimes(1);
+      expect(client.github.issues.listLabelsForRepo).toHaveBeenCalledWith({ ...repositoryOptions });
     });
 
     it('should return the data property from the result of the call `github.issues.getLabels`', () => {
-      client.github.issues.getLabels = jest.fn(() => Promise.resolve({ data: 'foobar' }));
+      client.github.issues.listLabelsForRepo = jest.fn(() => Promise.resolve({ data: 'foobar' }));
 
       return client.getLabels(repository).then(label => {
         expect(label).toBe('foobar');
